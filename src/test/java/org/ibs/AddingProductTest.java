@@ -1,5 +1,6 @@
 package org.ibs;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,11 +10,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-public class TestTwo extends BaseTest {
-    @Tag("ST_2")
+public class AddingProductTest extends BaseTest{
+
+    @Tag("ST_1")
     @ParameterizedTest
-    @MethodSource("testDataTwo")
-    void testAddingExoticProduct(String nameProduct, String type, String ruType, String numberString){
+    @MethodSource("testDataOne")
+    void testAddingProduct(String nameProduct, String type, String ruType, String numberString){
 
 // Раскрываем окно браузера на весь экран
         driver.manage().window().maximize();
@@ -43,13 +45,11 @@ public class TestTwo extends BaseTest {
 // Проверяем, что зафиксировался выбор в дроп-меню
         Select typeSelectionField = new Select(driver.findElement(By.id("type")));
         typeSelectionField.selectByValue(type);
-        Assertions.assertEquals(type, driver.findElement(By.id("type")).getAttribute("value"),
-                "Выбран овощ");
+        Assertions.assertEquals(type, driver.findElement(By.id("type")).getAttribute("value"));
 
-// Нажимаем на чек-бокс и проверяем, что он выбран
+// Находим чек-бокс и проверяем, что он не выбран
         WebElement exoticCheckBox = driver.findElement(By.id("exotic"));
-        exoticCheckBox.click();
-        Assertions.assertTrue(exoticCheckBox.isSelected(), "Чек-бокс не выбран");
+        Assertions.assertFalse(exoticCheckBox.isSelected(), "Чек-бокс выбран");
 
 // Нажимаем кнопку сохранить
         WebElement saveButton = driver.findElement(By.id("save"));
@@ -63,12 +63,12 @@ public class TestTwo extends BaseTest {
         Assertions.assertEquals(nameProduct,
                 driver.findElement(By.xpath("//tr[" + numberString + "]/td[1]")).getText());
 
-// Проверяем, Что появился тип созданного фрукта
+// Проверяем, что появился тип созданного фрукта
         Assertions.assertEquals(ruType,
                 driver.findElement(By.xpath("//tr[" + numberString + "]/td[2]")).getText());
 
-// Проверяем, что отображается экзотичность созданного фрукта
-        Assertions.assertEquals("true",
+// Проверяем, что экзотичность созданного фрукта отображается корректно
+        Assertions.assertEquals("false",
                 driver.findElement(By.xpath("//tr[" + numberString + "]/td[3]")).getText());
     }
 }

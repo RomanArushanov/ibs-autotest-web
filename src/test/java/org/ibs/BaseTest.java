@@ -48,12 +48,4 @@ public class BaseTest {
                 {"الشمندر", "VEGETABLE", "Овощ", "9"}
         };
     }
-
-    void sleep(){
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

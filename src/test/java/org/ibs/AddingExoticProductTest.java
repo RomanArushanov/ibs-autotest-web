@@ -1,5 +1,6 @@
 package org.ibs;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,10 +10,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-public class TestOne extends BaseTest{
-    @Tag("ST_1")
+@Slf4j
+public class AddingExoticProductTest extends BaseTest {
+    @Tag("ST_2")
     @ParameterizedTest
-    @MethodSource("testDataOne")
+    @MethodSource("testDataTwo")
     void testAddingExoticProduct(String nameProduct, String type, String ruType, String numberString){
 
 // Раскрываем окно браузера на весь экран
@@ -24,6 +26,8 @@ public class TestOne extends BaseTest{
 // Проверяем, что открылась базовая страница
         WebElement productListHeader = driver.findElement(By.xpath("//h5[text()='Список товаров']"));
         Assertions.assertEquals("Список товаров", productListHeader.getText());
+
+        log.info("asdfsdf");
 
 // Нажимаем кнопку добавить
         WebElement addButton = driver.findElement(By.xpath("//button[text()='Добавить']"));
@@ -43,11 +47,13 @@ public class TestOne extends BaseTest{
 // Проверяем, что зафиксировался выбор в дроп-меню
         Select typeSelectionField = new Select(driver.findElement(By.id("type")));
         typeSelectionField.selectByValue(type);
-        Assertions.assertEquals(type, driver.findElement(By.id("type")).getAttribute("value"));
+        Assertions.assertEquals(type, driver.findElement(By.id("type")).getAttribute("value"),
+                "Выбран овощ");
 
-// Находим чек-бокс и проверяем, что он не выбран
+// Нажимаем на чек-бокс и проверяем, что он выбран
         WebElement exoticCheckBox = driver.findElement(By.id("exotic"));
-        Assertions.assertFalse(exoticCheckBox.isSelected(), "Чек-бокс выбран");
+        exoticCheckBox.click();
+        Assertions.assertTrue(exoticCheckBox.isSelected(), "Чек-бокс не выбран");
 
 // Нажимаем кнопку сохранить
         WebElement saveButton = driver.findElement(By.id("save"));
@@ -61,12 +67,12 @@ public class TestOne extends BaseTest{
         Assertions.assertEquals(nameProduct,
                 driver.findElement(By.xpath("//tr[" + numberString + "]/td[1]")).getText());
 
-// Проверяем, что появился тип созданного фрукта
+// Проверяем, Что появился тип созданного фрукта
         Assertions.assertEquals(ruType,
                 driver.findElement(By.xpath("//tr[" + numberString + "]/td[2]")).getText());
 
-// Проверяем, что экзотичность созданного фрукта отображается корректно
-        Assertions.assertEquals("false",
+// Проверяем, что отображается экзотичность созданного фрукта
+        Assertions.assertEquals("true",
                 driver.findElement(By.xpath("//tr[" + numberString + "]/td[3]")).getText());
     }
 }
