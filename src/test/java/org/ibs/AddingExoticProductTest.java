@@ -1,6 +1,5 @@
 package org.ibs;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,7 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-@Slf4j
 public class AddingExoticProductTest extends BaseTest {
     @Tag("ST_2")
     @ParameterizedTest
@@ -26,8 +24,6 @@ public class AddingExoticProductTest extends BaseTest {
 // Проверяем, что открылась базовая страница
         WebElement productListHeader = driver.findElement(By.xpath("//h5[text()='Список товаров']"));
         Assertions.assertEquals("Список товаров", productListHeader.getText());
-
-        log.info("asdfsdf");
 
 // Нажимаем кнопку добавить
         WebElement addButton = driver.findElement(By.xpath("//button[text()='Добавить']"));
